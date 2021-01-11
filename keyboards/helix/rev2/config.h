@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    Yushakobo
 #define PRODUCT         Helix Beta
+#define DESCRIPTION     A split keyboard for the cheap makers
 
 /* Use I2C or Serial */
 #define USE_SERIAL

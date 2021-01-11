@@ -6,6 +6,7 @@
     "height": 1,
     "layouts": {
       "LAYOUT": {
+        "key_count": 1,
         "layout": [ {"x": 0, "y": 0 }]
       }
     }

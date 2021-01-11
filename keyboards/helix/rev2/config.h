@@ -25,9 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MANUFACTURER    Yushakobo
 #define PRODUCT         Helix Beta
 
-#define TAPPING_FORCE_HOLD
-#define TAPPING_TERM 100
-
 /* Use I2C or Serial */
 #define USE_SERIAL
 //#define USE_MATRIX_I2C
@@ -71,14 +68,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* COL2ROW, ROW2COL*/
 #define DIODE_DIRECTION COL2ROW
 
+#define DEBOUNCE 5
+#define TAPPING_TOGGLE  1
+#define TAPPING_TERM    200
+#define IGNORE_MOD_TAP_INTERRUPT // this makes it possible to do rolling combos (zx) with keys that convert to other keys on hold (z becomes ctrl when you hold it, and when this option isn't enabled, z rapidly followed by x actually sends Ctrl-x. That's bad.)
 /* define if matrix has ghost */
 //#define MATRIX_HAS_GHOST
 
 /* number of backlight levels */
 // #define BACKLIGHT_LEVELS 3
 
-/* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 5
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 //#define LOCKING_SUPPORT_ENABLE

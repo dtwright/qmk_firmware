@@ -13,6 +13,7 @@ enum encoder_names {
 };
 
 uint8_t ledIndex = LED_INDEX_START;
+uint8_t spaceHeld = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -25,8 +26,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		case UNO:
             if (record->event.pressed) {
             } else {
-                SEND_STRING(SS_LALT("a"));
-                SEND_STRING(SS_LCTL("d"));
+                /* this is a dumb hack for "temp unmute" in zoom */
+                if (spaceHeld) {
+                    unregister_code(KC_SPC);
+                    spaceHeld = 0;
+                } else {
+                    register_code(KC_SPC);
+                    spaceHeld = 1;
+                }
             }
         break;
     }

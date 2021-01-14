@@ -2,7 +2,8 @@
 
 #define RGB_STEPS 16
 #define LED_INDEX_START 8
-#define SCROLL_HOLD_TIME 1000
+// how long allowed between double-taps to switch scroll direction?
+#define SCROLL_HOLD_TIME 1500
 
 enum uno_keycode
 {
@@ -103,13 +104,3 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     }
 }
 
-/*
-void matrix_scan_user(void) {
-    if(scrollMode && isScrolling) {
-        if(timer_elapsed(scrollTimer) > SCROLL_HOLD_TIME) {
-            unregister_code(scrollKeyCode);
-            isScrolling = false;
-        }
-    }
-}
-*/

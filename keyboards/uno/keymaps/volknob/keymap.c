@@ -2,6 +2,7 @@
 
 #define RGB_STEPS 16
 #define LED_INDEX_START 8
+#define SCROLL_HOLD_TIME 1000
 
 enum uno_keycode
 {
@@ -12,8 +13,13 @@ enum encoder_names {
 	_ENCODER,
 };
 
+uint16_t scrollTimer = 0;
+uint8_t scrollClicks = 0;
+// uint16_t scrollKeyCode = 0;
+bool scrollMode = false;
+bool scrollHoriz = false;
+
 uint8_t ledIndex = LED_INDEX_START;
-uint8_t spaceHeld = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
@@ -23,16 +29,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch (keycode) {
-		case UNO:
+	case UNO:
             if (record->event.pressed) {
             } else {
-                /* this is a dumb hack for "temp unmute" in zoom */
-                if (spaceHeld) {
-                    unregister_code(KC_SPC);
-                    spaceHeld = 0;
+                if(scrollMode) {
+                    scrollClicks++;
+                    if(scrollTimer == 0) scrollTimer = timer_read();
+                    if(timer_elapsed(scrollTimer) < SCROLL_HOLD_TIME && scrollClicks > 1) {
+                        if(scrollHoriz) {
+                            scrollHoriz = false;
+                        } else {
+                            scrollHoriz = true;
+                        }
+                        scrollClicks = 0;
+                    } else if(timer_elapsed(scrollTimer) > SCROLL_HOLD_TIME) {
+                        scrollMode = 0;
+                    }
+                    scrollTimer = timer_read();
                 } else {
-                    register_code(KC_SPC);
-                    spaceHeld = 1;
+                    scrollMode = 1;
+                    scrollClicks = 0;
+                    scrollTimer = 0;
                 }
             }
         break;
@@ -52,19 +69,47 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         if (clockwise) {
             ledIndex++;
             ledIndex %= RGB_STEPS;
-            // SEND_STRING(SS_TAP(X_VOLU));
-            register_code(KC_VOLU);
-            unregister_code(KC_VOLU);
+            if(!scrollMode) {
+                register_code(KC_VOLU);
+                unregister_code(KC_VOLU);
+            } else {
+                if(scrollHoriz) {
+                    register_code(KC_WH_R);
+                    unregister_code(KC_WH_R);
+                } else {
+                    register_code(KC_WH_D);
+                    unregister_code(KC_WH_D);
+                }
+            }
         } else {
             ledIndex += RGB_STEPS;
             ledIndex--;
             ledIndex %= RGB_STEPS;
-            // SEND_STRING(SS_TAP(X_VOLD));
-            register_code(KC_VOLD);
-            unregister_code(KC_VOLD);
+            if(!scrollMode) {
+                register_code(KC_VOLD);
+                unregister_code(KC_VOLD);
+            } else {
+                if(scrollHoriz) {
+                    register_code(KC_WH_L);
+                    unregister_code(KC_WH_L);
+                } else {
+                    register_code(KC_WH_U);
+                    unregister_code(KC_WH_U);
+                }
+            }
         }
-        // rgblight_sethsv_noeeprom((255/RGB_STEPS)*ledIndex, 255-(255/RGB_STEPS)*ledIndex, 255);
         rgblight_sethsv_noeeprom((255/RGB_STEPS)*ledIndex, 255, 255);
         rgblight_mode_noeeprom(1);
     }
 }
+
+/*
+void matrix_scan_user(void) {
+    if(scrollMode && isScrolling) {
+        if(timer_elapsed(scrollTimer) > SCROLL_HOLD_TIME) {
+            unregister_code(scrollKeyCode);
+            isScrolling = false;
+        }
+    }
+}
+*/

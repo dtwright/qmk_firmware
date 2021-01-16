@@ -1,7 +1,9 @@
+# Make settings for the volume/scroll knob. Needs some things turned on that 
+# aren't in the base rules for uno v2.
 BOOTMAGIC_ENABLE = no      # Virtual DIP switch configuration
 MOUSEKEY_ENABLE = yes      # Mouse keys
 EXTRAKEY_ENABLE = yes      # Audio control and System control
-CONSOLE_ENABLE = yes       # Console for debug
+CONSOLE_ENABLE = no        # Console for debug. Turn this on if you enable debugging in keymap.c.
 COMMAND_ENABLE = no        # Commands for debug and configuration
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend

@@ -30,7 +30,7 @@ uint8_t ledIndex = LED_INDEX_START;
 
 enum uno_keycode
 {
-    MUTE = SAFE_RANGE
+    MEDIA = SAFE_RANGE
 };
 
 enum encoder_names {

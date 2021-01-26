@@ -39,17 +39,17 @@ enum encoder_names {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
-        MUTE
+        MEDIA
     )
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case MUTE:
+    case MEDIA:
         if (record->event.pressed) {
         } else {
-            register_code(KC_MUTE);
-            unregister_code(KC_MUTE);
+            register_code(KC_MPLY);
+            unregister_code(KC_MPLY);
         }
         break;
     }

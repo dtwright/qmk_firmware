@@ -32,6 +32,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define V_SCROLL_COLOR 192
 #define H_SCROLL_COLOR 32
 
+// how many scroll keycodes to send per wheel notch?
+#define SCROLLS_PER_DETENT 3
+
 enum uno_keycode
 {
     MODE = SAFE_RANGE
@@ -101,11 +104,15 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 unregister_code(KC_VOLU);
             } else {
                 if(scrollHoriz) {
-                    register_code(KC_WH_R);
-                    unregister_code(KC_WH_R);
+                    for(int i = 0; i < SCROLLS_PER_DETENT; i++) {
+                        register_code(KC_WH_R);
+                        unregister_code(KC_WH_R);
+                    }
                 } else {
-                    register_code(KC_WH_D);
-                    unregister_code(KC_WH_D);
+                    for(int i = 0; i < SCROLLS_PER_DETENT; i++) {
+                        register_code(KC_WH_D);
+                        unregister_code(KC_WH_D);
+                    }
                 }
             }
         } else {
@@ -117,11 +124,15 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 unregister_code(KC_VOLD);
             } else {
                 if(scrollHoriz) {
-                    register_code(KC_WH_L);
-                    unregister_code(KC_WH_L);
+                    for(int i = 0; i < SCROLLS_PER_DETENT; i++) {
+                        register_code(KC_WH_L);
+                        unregister_code(KC_WH_L);
+                    }
                 } else {
-                    register_code(KC_WH_U);
-                    unregister_code(KC_WH_U);
+                    for(int i = 0; i < SCROLLS_PER_DETENT; i++) {
+                        register_code(KC_WH_U);
+                        unregister_code(KC_WH_U);
+                    }
                 }
             }
         }

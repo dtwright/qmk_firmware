@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define H_SCROLL_COLOR 32
 
 // how many scroll keycodes to send per wheel notch?
-#define SCROLLS_PER_DETENT 3
+#define SCROLLS_PER_DETENT 2
 
 enum uno_keycode
 {

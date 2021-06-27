@@ -23,6 +23,43 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_CMD_CTL] = ACTION_TAP_DANCE_DOUBLE(KC_LCMD, KC_LCTL),
 };
 
+enum combos {
+    QA_1 = 0,
+    WS_2,
+    ED_3,
+    RF_4,
+    TG_5,
+    YH_6,
+    UJ_7,
+    IK_8,
+    OL_9,
+    PSCLN_0
+};
+
+const uint16_t PROGMEM combo_1[] = {KC_Q, KC_A, COMBO_END};
+const uint16_t PROGMEM combo_2[] = {KC_W, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_3[] = {KC_E, KC_D, COMBO_END};
+const uint16_t PROGMEM combo_4[] = {KC_R, KC_F, COMBO_END};
+const uint16_t PROGMEM combo_5[] = {KC_T, KC_G, COMBO_END};
+const uint16_t PROGMEM combo_6[] = {KC_Y, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_7[] = {KC_U, KC_J, COMBO_END};
+const uint16_t PROGMEM combo_8[] = {KC_I, KC_K, COMBO_END};
+const uint16_t PROGMEM combo_9[] = {KC_O, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_0[] = {KC_P, KC_SCLN, COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+    [QA_1] = COMBO(combo_1, KC_1),
+    [WS_2] = COMBO(combo_2, KC_2),
+    [ED_3] = COMBO(combo_3, KC_3),
+    [RF_4] = COMBO(combo_4, KC_4),
+    [TG_5] = COMBO(combo_5, KC_5),
+    [YH_6] = COMBO(combo_6, KC_6),
+    [UJ_7] = COMBO(combo_7, KC_7),
+    [IK_8] = COMBO(combo_8, KC_8),
+    [OL_9] = COMBO(combo_9, KC_9),
+    [PSCLN_0] = COMBO(combo_0, KC_0),
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* QWERTY

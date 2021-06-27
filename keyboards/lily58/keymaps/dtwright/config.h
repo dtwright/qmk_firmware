@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 225
+#define COMBO_TERM 175
 #define DEBOUNCE 5
 #define TAPPING_TOGGLE  1
 #define IGNORE_MOD_TAP_INTERRUPT

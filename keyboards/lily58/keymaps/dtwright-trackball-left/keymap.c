@@ -30,6 +30,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_CMD_CTL] = ACTION_TAP_DANCE_DOUBLE(KC_LCMD, KC_LCTL),
 };
 
+/* disabled combos; not actually using them
 enum combos {
     QA_1 = 0,
     WS_2,
@@ -66,6 +67,7 @@ combo_t key_combos[COMBO_COUNT] = {
     [OL_9] = COMBO(combo_9, KC_9),
     [PSCLN_0] = COMBO(combo_0, KC_0),
 };
+*/
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -108,10 +110,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT( \
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,\
-  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN4, KC_F6,                     KC_BTN3, KC_BTN2, _______, _______, _______, _______, \
+  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN4, KC_F6,                     KC_BTN1, KC_BTN3, KC_BTN2, _______, _______, KC_PIPE, \
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_CIRC, KC_UNDS, KC_PLUS, KC_LPRN, KC_RPRN, _______, \
   KC_CAPS, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  _______, _______, XXXXXXX, _______, _______, KC_HOME, KC_END,  _______, \
-                             _______, _______, _______, _______, KC_BTN1,  _______, _______, _______\
+                             _______, _______, _______, _______, XXXXXXX,  _______, _______, _______\
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.

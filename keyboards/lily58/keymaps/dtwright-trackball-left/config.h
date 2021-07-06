@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DEBOUNCE 5
 #define TAPPING_TOGGLE 1
 #define IGNORE_MOD_TAP_INTERRUPT
-#define COMBO_COUNT 10
+#define COMBO_COUNT 0
 
 
 /* mousekey stuff */
@@ -53,9 +53,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PIMORONI_SCROLL_SCALING 0.55
 #define PIMORONI_MOUSE_SCALING 1
-#define PIMORONI_MOUSE_ACCEL 1.5
+#define PIMORONI_MOUSE_ACCEL 1
 #define PIMORONI_MOUSE_POWER 2.5
-#define TRACKBALL_ACCELERATION_WINDOW 1500
+#define TRACKBALL_ACCELERATION_WINDOW 150
 
 /*
 #undef RGBLED_NUM

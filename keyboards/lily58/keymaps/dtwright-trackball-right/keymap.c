@@ -1,4 +1,11 @@
 #include QMK_KEYBOARD_H
+#ifdef POINTING_DEVICE_ENABLE
+#include "pointing_device.h"
+#endif
+
+#ifdef PIMORONI_TRACKBALL_ENABLE
+#include "pimoroni_trackball.h"
+#endif
 
 extern uint8_t is_master;
 
@@ -101,10 +108,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT( \
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,\
-  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN4, KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_PIPE, \
+  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN4, KC_F6,                     KC_BTN3, KC_BTN2, _______, _______, _______, _______, \
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_CIRC, KC_UNDS, KC_PLUS, KC_LPRN, KC_RPRN, _______, \
   KC_CAPS, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  _______, _______, XXXXXXX, _______, _______, KC_HOME, KC_END,  _______, \
-                             _______, _______, _______, _______, _______,  _______, _______, _______\
+                             _______, _______, _______, _______, KC_BTN1,  _______, _______, _______\
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -154,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_MOUSE] = LAYOUT( \
   XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
-  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_WH_U, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
+  XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, KC_WH_U, XXXXXXX,                   KC_BTN1, KC_BTN3, KC_BTN2, XXXXXXX, XXXXXXX, _______, \
   _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
   _______, XXXXXXX, XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_R, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,\
                              _______, _______, _______, KC_BSPC, _______,  _______, _______, _______ \
@@ -229,3 +236,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+#ifdef PIMORONI_TRACKBALL_ENABLE
+void pointing_device_task() {
+    report_mouse_t mouse_report = pointing_device_get_report();
+
+    if (is_keyboard_master()) {
+        process_mouse(&mouse_report);
+    }
+
+    switch (get_highest_layer(layer_state)) {
+        case _QWERTY:
+            trackball_set_rgbw(0,0,0,120);
+            break;
+        case _LOWER:
+            trackball_set_rgbw(0,153,95,0);
+            break;
+        case _RAISE:
+            trackball_set_rgbw(153,113,0,0);
+            break;
+        case _MOUSE:
+            trackball_set_rgbw(20,200,0,0);
+            break;
+        case _ARROWS:
+            trackball_set_rgbw(200,50,100,0);
+            break;
+        default:
+            trackball_set_rgbw(0,0,0,0);
+    }
+
+
+    if (layer_state_is(_ARROWS)) {
+        trackball_set_scrolling(true);
+    } else {
+        trackball_set_scrolling(false);
+    }
+
+    pointing_device_set_report(mouse_report);
+    pointing_device_send();
+}
+#endif
+
+

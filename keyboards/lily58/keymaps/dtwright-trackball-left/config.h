@@ -51,6 +51,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_WHEEL_TIME_TO_MAX  50
 #define MOUSEKEY_WHEEL_INTERVAL     40
 
+#define PIMORONI_SCROLL_SCALING 0.55
+#define PIMORONI_MOUSE_SCALING 1
+#define PIMORONI_MOUSE_ACCEL 1.5
+#define PIMORONI_MOUSE_POWER 2.5
+#define TRACKBALL_ACCELERATION_WINDOW 1500
+
 /*
 #undef RGBLED_NUM
 #define RGBLIGHT_ANIMATIONS

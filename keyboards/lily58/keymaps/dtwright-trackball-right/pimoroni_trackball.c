@@ -29,15 +29,18 @@
 #endif
 
 /* 
- * these two apply simple scaling factors to the read values before sending 
- * (in pointing_device_send()). set to "1" to effectively disable.
+ * this is used in place of MOUSE_ACCEL below when in scroll mode 
  */
-#ifndef PIMORONI_SCROLL_SCALING // if you set this below 0.5 you'll get very bad behavior
-#   define PIMORONI_SCROLL_SCALING 1
+#ifndef PIMORONI_SCROLL_ACCEL // if you set this below 0.5 you'll get very bad behavior
+#   define PIMORONI_SCROLL_ACCEL 1
 #endif
+/****/
 
-#ifndef PIMORONI_MOUSE_SCALING
-#   define PIMORONI_MOUSE_SCALING 1
+/* this turns on the extra acceleration factor permanently (disregarding 
+ * the timeout window defined above)
+ */
+#ifndef PIMORONI_ACCEL_PERMANENT
+#   define PIMORONI_ACCEL_PERMANENT 0
 #endif
 /****/
 
@@ -249,10 +252,12 @@ __attribute__((weak)) void process_mouse(report_mouse_t* mouse) {
             }
         } else {
             float power = PIMORONI_MOUSE_POWER;
-            float var_accel = PIMORONI_MOUSE_ACCEL; //acceleration factor
+            float var_accel = scrolling ? PIMORONI_SCROLL_ACCEL : PIMORONI_MOUSE_ACCEL; //acceleration factor
             double newlen = pow(state.vector_length, power);
 
-            if (state.vector_length > 2 && (timer_elapsed(acceleration_timer) == 0 || timer_elapsed(acceleration_timer) < TRACKBALL_ACCELERATION_WINDOW)) {
+            if (state.vector_length > 2 && (PIMORONI_ACCEL_PERMANENT || 
+                    (timer_elapsed(acceleration_timer) == 0 ||
+                     timer_elapsed(acceleration_timer) < TRACKBALL_ACCELERATION_WINDOW))) {
                 acceleration_timer = timer_read();
                 newlen += pow(state.vector_length*var_accel, power);
             } else {
@@ -315,9 +320,9 @@ __attribute__((weak)) void pointing_device_send(void) {
         mouseReport.h = 0;
         mouseReport.v = 0;
         if (!scrolling) {
-            process_mouse_user(&mouseReport, x*PIMORONI_MOUSE_SCALING, y*PIMORONI_MOUSE_SCALING, 0, 0);
+            process_mouse_user(&mouseReport, x, y, 0, 0);
         } else {
-            process_mouse_user(&mouseReport, 0, 0, h*PIMORONI_SCROLL_SCALING, v*PIMORONI_SCROLL_SCALING);
+            process_mouse_user(&mouseReport, 0, 0, h, v);
         }
 
         if (has_report_changed(mouseReport, old_report)) {
@@ -334,9 +339,9 @@ __attribute__((weak)) void pointing_device_send(void) {
         }
 
         if (!scrolling) {
-            master_mouse_send(mouseReport.x*PIMORONI_MOUSE_SCALING, mouseReport.y*PIMORONI_MOUSE_SCALING, 0, 0 , mouseReport.buttons);
+            master_mouse_send(mouseReport.x, mouseReport.y, 0, 0 , mouseReport.buttons);
         } else {
-            master_mouse_send(0, 0, mouseReport.h*PIMORONI_SCROLL_SCALING, mouseReport.v*PIMORONI_SCROLL_SCALING, 0);
+            master_mouse_send(0, 0, mouseReport.h, mouseReport.v, 0);
         }
     }
     mouseReport.x = 0;
